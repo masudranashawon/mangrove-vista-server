@@ -1,38 +1,105 @@
-const { createToken } = require("../helpers/token.helper");
+const mongoose = require("mongoose");
 const User = require("../models/user.model");
 
-//register controller
-const registerUser = async (req, res) => {
-  const { name, email, password, number } = req.body;
-
+//get an user controller
+const getUser = async (req, res) => {
   try {
-    const user = await User.register(name, email, password, number);
+    const { userId } = req.params;
 
-    //Create token
-    const token = createToken(user._id);
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
 
-    res.status(200).json({ user, token });
+    if (userId !== req.user?._id.toString()) {
+      res.status(403).json({ message: "Forbidden" });
+      return;
+    }
+
+    const user = await User.findById(userId);
+
+    res.status(200).json(user);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(404).json({ error: error.message });
   }
 };
 
-// login controller
-const loginUser = async (req, res) => {
+//update an user controller
+const updateUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { userId } = req.params;
+    const { name, number } = req.body;
 
-    const user = await User.login(email, password);
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
 
-    const token = createToken(user._id);
+    if (userId !== req.user?._id.toString()) {
+      res.status(403).json({ message: "Forbidden" });
+      return;
+    }
 
-    res.status(200).json({ user, token });
+    // blank checking
+    if (!name || !number) {
+      return res
+        .status(400)
+        .json({ error: "All field is required and cannot be empty" });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: { name, number },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(user);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(404).json({ error: error.message });
+  }
+};
+
+//delete an user controller
+const deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
+    if (userId !== req.user?._id.toString()) {
+      res.status(403).json({ message: "Forbidden" });
+      return;
+    }
+
+    const user = await User.findByIdAndDelete(userId);
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+//get all users controller
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({}).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
   }
 };
 
 module.exports = {
-  registerUser,
-  loginUser,
+  getUser,
+  updateUser,
+  deleteUser,
+  getUsers,
 };
