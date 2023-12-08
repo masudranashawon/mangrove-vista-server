@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 const authRoutes = require("./routes/auth.route");
 const userRoutes = require("./routes/user.route");
+const accommodationRoutes = require("./routes/accommodation.route");
 
 // variables
 const port = process.env.PORT || 8080;
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 // bypass API
 app.use("/api/auth/user", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/accommodation", accommodationRoutes);
 
 //mongodb database connection
 mongoose.set("strictQuery", false);

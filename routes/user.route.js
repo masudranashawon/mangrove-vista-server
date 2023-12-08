@@ -14,7 +14,7 @@ const router = express.Router();
 router.get("/:userId", isAuthenticated, getUser);
 
 // update an user route
-router.patch("/:userId", isAuthenticated, updateUser);
+router.put("/:userId", isAuthenticated, updateUser);
 
 // delete an user route
 router.delete("/:userId", isAuthenticated, deleteUser);
