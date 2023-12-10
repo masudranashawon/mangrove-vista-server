@@ -84,6 +84,35 @@ const deleteUser = async (req, res) => {
   }
 };
 
+//blacklist an user controller
+const blacklistUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
+    const updateUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: { isBlacklisted: !user.isBlacklisted } },
+      { new: true }
+    );
+
+    res.status(200).json(updateUser);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 //get all users controller
 const getUsers = async (req, res) => {
   try {
@@ -101,5 +130,6 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  blacklistUser,
   getUsers,
 };

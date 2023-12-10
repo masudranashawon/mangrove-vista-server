@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth.route");
 const userRoutes = require("./routes/user.route");
 const accommodationRoutes = require("./routes/accommodation.route");
+const bookingRoutes = require("./routes/booking.route");
 
 // variables
 const port = process.env.PORT || 8080;
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth/user", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/accommodation", accommodationRoutes);
+app.use("/api/booking", bookingRoutes);
 
 //mongodb database connection
 mongoose.set("strictQuery", false);
