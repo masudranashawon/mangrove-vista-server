@@ -5,6 +5,7 @@ const {
   deleteUser,
   getUsers,
   blacklistUser,
+  manageUserRole,
 } = require("../controllers/user.controller");
 const { isAuthenticated, isAdmin } = require("../middlewares/auth.middleware");
 
@@ -25,5 +26,8 @@ router.get("/", isAuthenticated, isAdmin, getUsers);
 
 // suspend/unsuspend an user route
 router.put("/blacklist/:userId", isAuthenticated, isAdmin, blacklistUser);
+
+// update an user/admin role route
+router.put("/role/:userId", isAuthenticated, isAdmin, manageUserRole);
 
 module.exports = router;
