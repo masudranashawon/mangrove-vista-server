@@ -30,10 +30,10 @@ app.get("/", (req, res) => {
 });
 
 // bypass API
-app.use("/api/auth/user", authRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/accommodation", accommodationRoutes);
-app.use("/api/booking", bookingRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/accommodations", accommodationRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 //mongodb database connection
 mongoose.set("strictQuery", false);
