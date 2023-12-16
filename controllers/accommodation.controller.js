@@ -16,7 +16,7 @@ const getAccommodation = async (req, res) => {
 
     res.status(200).json(accommodation);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -29,7 +29,7 @@ const getAllAccommodations = async (req, res) => {
 
     res.status(200).json(accommodations);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -75,7 +75,7 @@ const createAccommodation = async (req, res) => {
 
     res.status(200).json(accommodation);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -116,7 +116,7 @@ const updateAccommodation = async (req, res) => {
 
     res.status(200).json(accommodation);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -135,7 +135,7 @@ const deleteAccommodation = async (req, res) => {
 
     res.status(200).json(beautyPackage);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
