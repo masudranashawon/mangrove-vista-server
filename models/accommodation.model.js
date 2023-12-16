@@ -33,12 +33,13 @@ const accommodationSchema = new Schema({
   bookings: [{ type: Schema.Types.ObjectId, ref: "Booking" }],
 });
 
-accommodationSchema.methods.isAvailable = async function (
+accommodationSchema.statics.isAvailable = async function (
+  accommodationId,
   checkInDate,
   checkOutDate
 ) {
-  const existingBookings = await Booking.find({
-    accommodation: this._id,
+  const existingBookings = await mongoose.model("Booking").find({
+    accommodation: accommodationId,
     $or: [
       {
         $and: [
